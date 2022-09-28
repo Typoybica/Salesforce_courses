@@ -1,6 +1,7 @@
 public inherited sharing class DealManager {
     
     public static final String DEFAULT_STATUS = 'Open';
+    public static final Id DEAL_LEASE_TYPE = Schema.SObjectType.Deal__c.getRecordTypeInfosByName().get('Lease').getRecordTypeId();
 
     public class DealWrapper{
         public Id id {get; set;}
@@ -37,7 +38,7 @@ public inherited sharing class DealManager {
         deal.Salesman__c = wrapper.salesman;
         deal.Status__c = String.isBlank(wrapper.status) ? DEFAULT_STATUS : wrapper.status;
         deal.RecordTypeId = wrapper.recordTypeId;
-        if (deal.RecordType.Name == 'Lease') {
+        if (deal.RecordTypeId == DEAL_LEASE_TYPE) {
             deal.Rental_start_date__c = wrapper.leaseStartDate;
             deal.Rental_end_date__c = wrapper.leaseEndDate;
         }
@@ -59,7 +60,7 @@ public inherited sharing class DealManager {
             deal.Salesman__c = wrapper.salesman;
             deal.Status__c = String.isBlank(wrapper.status) ? DEFAULT_STATUS : wrapper.status;
             deal.RecordTypeId = wrapper.recordTypeId;
-            if (deal.RecordType.Name == 'Lease') {
+            if (deal.RecordTypeId == DEAL_LEASE_TYPE) {
                 deal.Rental_start_date__c = wrapper.leaseStartDate;
                 deal.Rental_end_date__c = wrapper.leaseEndDate;
             }
