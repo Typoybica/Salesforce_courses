@@ -20,16 +20,15 @@ public inherited sharing class LogManager {
         return log;
     }
 
-    public static List<Log__c> updateLogById(Id id, String type, String message, Boolean serialize) {
-        List<Log__c> logsToUpdate = [SELECT Type__c, Message__c FROM Log__c WHERE Id = :id];
-        for (Log__c log : logsToUpdate) {
-            log.Type__c = type;
-            log.Message__c = message;
-        }
+    public static Log__c updateLogById(Id id, String type, String message, Boolean serialize) {
+        Log__c logToUpdate = [SELECT Type__c, Message__c FROM Log__c WHERE Id = :id];
         
-        if (serialize) update logsToUpdate;
+        logToUpdate.Type__c = type;
+        logToUpdate.Message__c = message;
+        
+        if (serialize) update logToUpdate;
 
-        return logsToUpdate;
+        return logToUpdate;
     }
 
     public static void deleteLogsByTypes(List<String> types) {

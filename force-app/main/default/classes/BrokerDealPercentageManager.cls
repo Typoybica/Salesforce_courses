@@ -32,8 +32,6 @@ public inherited sharing class BrokerDealPercentageManager {
 
     public static Broker_Deal_Percentage__c updateBrokerDealPercentageById(BrokerDealPercentageWrapper wrapper, Boolean serialize) {
         Broker_Deal_Percentage__c brokerDealPercentage = [SELECT Broker__c, Deal__c, Broker_percent__c FROM Broker_Deal_Percentage__c WHERE Id = :wrapper.id];
-        brokerDealPercentage.Broker__c = wrapper.brokerId;
-        brokerDealPercentage.Deal__c = wrapper.dealId;
         brokerDealPercentage.Broker_percent__c = wrapper.brokerDealPercent;
 
         if (serialize) update brokerDealPercentage;

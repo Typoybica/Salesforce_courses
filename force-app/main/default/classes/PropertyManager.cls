@@ -17,7 +17,7 @@ public inherited sharing class PropertyManager {
     }
 
     public static List<Property__c> getPropertiesByOwners(List<Id> ownersIds, String fields) {
-        return Database.query('SELECT ' + fields + ' FROM Property__c WHERE Owner__c IN :ownersIds');
+        return Database.query('SELECT ' + fields + ' FROM Property__c WHERE Property_Owner__c IN :ownersIds');
     }
 
     public static Property__c createProperty(PropertyWrapper wrapper, Boolean serialize) {

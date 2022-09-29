@@ -49,26 +49,24 @@ public inherited sharing class DealManager {
     }
 
 
-    public static List<Deal__c> updateDealsById(DealWrapper wrapper, Boolean serialize) {
-        List<Deal__c> dealsToUpdate = [SELECT Buyer__c, Property_for_sale__c, Salesman__c,
+    public static Deal__c updateDealsById(DealWrapper wrapper, Boolean serialize) {
+        Deal__c dealToUpdate = [SELECT Buyer__c, Property_for_sale__c, Salesman__c,
                                             Status__c, RecordTypeId, Rental_start_date__c, 
                                             Rental_end_date__c FROM Deal__c WHERE Id = :wrapper.id];
         
-        for (Deal__c deal : dealsToUpdate) {
-            deal.Buyer__c = wrapper.buyer;
-            deal.Property_for_sale__c = wrapper.propertyForSale;
-            deal.Salesman__c = wrapper.salesman;
-            deal.Status__c = String.isBlank(wrapper.status) ? DEFAULT_STATUS : wrapper.status;
-            deal.RecordTypeId = wrapper.recordTypeId;
-            if (deal.RecordTypeId == DEAL_LEASE_TYPE) {
-                deal.Rental_start_date__c = wrapper.leaseStartDate;
-                deal.Rental_end_date__c = wrapper.leaseEndDate;
-            }
+        dealToUpdate.Buyer__c = wrapper.buyer;
+        dealToUpdate.Property_for_sale__c = wrapper.propertyForSale;
+        dealToUpdate.Salesman__c = wrapper.salesman;
+        dealToUpdate.Status__c = String.isBlank(wrapper.status) ? DEFAULT_STATUS : wrapper.status;
+        dealToUpdate.RecordTypeId = wrapper.recordTypeId;
+        if (dealToUpdate.RecordTypeId == DEAL_LEASE_TYPE) {
+            dealToUpdate.Rental_start_date__c = wrapper.leaseStartDate;
+            dealToUpdate.Rental_end_date__c = wrapper.leaseEndDate;
         }
 
-        if (serialize) update dealsToUpdate;
+        if (serialize) update dealToUpdate;
 
-        return dealsToUpdate;
+        return dealToUpdate;
     }
 
     public static void deleteDealsByStatuses(List<String> statuses) {
