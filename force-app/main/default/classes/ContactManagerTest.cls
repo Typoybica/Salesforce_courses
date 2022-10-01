@@ -1,5 +1,5 @@
 @isTest
-public with sharing class TestContactManager {
+public with sharing class ContactManagerTest {
 
     static final Id BROKER_TYPE = Schema.SObjectType.Contact.getRecordTypeInfosByName().get('Broker').getRecordTypeId();
     static final Id PROP_OWNER_TYPE = Schema.SObjectType.Contact.getRecordTypeInfosByName().get('Property Owner').getRecordTypeId();
