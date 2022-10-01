@@ -1,5 +1,5 @@
 @isTest
-public with sharing class TestPropertyManager {
+public with sharing class PropertyManagerTest {
 
     static final Id PROP_OWNER_TYPE = Schema.SObjectType.Contact.getRecordTypeInfosByName()
                                                     .get('Property Owner').getRecordTypeId();

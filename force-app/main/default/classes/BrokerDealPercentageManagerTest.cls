@@ -1,5 +1,5 @@
 @isTest
-public with sharing class TestBrokerDealPercentageManager {
+public with sharing class BrokerDealPercentageManagerTest {
     
     static final Id BROKER_TYPE = Schema.SObjectType.Contact.getRecordTypeInfosByName()
                                                         .get('Broker').getRecordTypeId();
