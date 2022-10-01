@@ -138,10 +138,13 @@ public with sharing class TestBrokerDealPercentageManager {
         wrap.brokerDealPercent = 20;
         wrap.brokerId = broker.Id;
 
-        Broker_Deal_Percentage__c resultBrDPerc = BrokerDealPercentageManager.createBrokerDealPercent(wrap, true);
-        Broker_Deal_Percentage__c resultDBBrDPerc = [SELECT Broker_percent__c FROM Broker_Deal_Percentage__c WHERE Id = :resultBrDPerc.Id];
+        Broker_Deal_Percentage__c resultBrDPerc = BrokerDealPercentageManager.createBrokerDealPercent(wrap, false);
         System.assertEquals(20, resultBrDPerc.Broker_percent__c);
-        System.assertEquals(20, resultDBBrDPerc.Broker_percent__c);
+        
+        Test.startTest();
+        Database.SaveResult result = Database.insert(resultBrDPerc);
+        Test.stopTest();
+        System.assert(result.isSuccess());
     }
 
     @isTest static void testUpdateBrokerDealPercentageById(){
@@ -151,10 +154,13 @@ public with sharing class TestBrokerDealPercentageManager {
         wrap.id = bdPercForUpdate.Id;
         wrap.brokerDealPercent = 20;
 
-        Broker_Deal_Percentage__c resultBrDPerc = BrokerDealPercentageManager.updateBrokerDealPercentageById(wrap, true);
-        Broker_Deal_Percentage__c resultDBBrDPerc = [SELECT Broker_percent__c FROM Broker_Deal_Percentage__c WHERE Id = :resultBrDPerc.Id];
+        Broker_Deal_Percentage__c resultBrDPerc = BrokerDealPercentageManager.updateBrokerDealPercentageById(wrap, false);
         System.assertEquals(20, resultBrDPerc.Broker_percent__c);
-        System.assertEquals(20, resultDBBrDPerc.Broker_percent__c);
+        
+        Test.startTest();
+        Database.SaveResult result = Database.update(resultBrDPerc);
+        Test.stopTest();
+        System.assert(result.isSuccess());
     }
 
     @isTest static void testDeleteBrokerDealPercentageByBrokers(){

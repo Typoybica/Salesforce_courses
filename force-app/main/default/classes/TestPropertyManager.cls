@@ -76,10 +76,13 @@ public with sharing class TestPropertyManager {
         wrap.rentalPrice = 200;
         wrap.sellingPrice = 5000;
 
-        Property__c resultProperty = PropertyManager.createProperty(wrap, true);
-        Property__c resultDBProperty = [SELECT Property_Owner__c FROM Property__c WHERE Id = :resultProperty.Id];
+        Property__c resultProperty = PropertyManager.createProperty(wrap, false);
         System.assertEquals(owners.get(0).Id, resultProperty.Property_Owner__c);
-        System.assertEquals(owners.get(0).Id, resultDBProperty.Property_Owner__c);
+        
+        Test.startTest();
+        Database.SaveResult result = Database.insert(resultProperty);
+        Test.stopTest();
+        System.assert(result.isSuccess());
     }
 
     @isTest static void testUpdatePropertyById(){
@@ -92,10 +95,13 @@ public with sharing class TestPropertyManager {
         wrap.rentalPrice = propertyForUpdate.Rental_price_per_month__c;
         wrap.sellingPrice = propertyForUpdate.Selling_price__c;
 
-        Property__c resultProperty = PropertyManager.updatePropertyById(wrap, true);
-        Property__c resultDBProperty = [SELECT Address__c FROM Property__c WHERE Id = :resultProperty.Id];
+        Property__c resultProperty = PropertyManager.updatePropertyById(wrap, false);
         System.assertEquals('Another address', resultProperty.Address__c);
-        System.assertEquals('Another address', resultDBProperty.Address__c);
+        
+        Test.startTest();
+        Database.SaveResult result = Database.update(resultProperty);
+        Test.stopTest();
+        System.assert(result.isSuccess());
     }
 
     @isTest static void testDeletePropertiesByAddresses(){

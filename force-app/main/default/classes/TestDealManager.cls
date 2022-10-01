@@ -18,15 +18,7 @@ public with sharing class TestDealManager {
     
     @testSetup 
     static void setup() 
-    {          
-        Contact broker = new Contact();
-        broker.FirstName = 'Test Contact';
-        broker.LastName = 'Broker 1';
-        broker.RecordTypeId = BROKER_TYPE;
-        broker.phone = '+375393837363';
-        broker.email = 'test_broker1@setuped.con';
-        insert broker;
-
+    {      
         Contact owner1 = new Contact();
         owner1.FirstName = 'Test Contact';
         owner1.LastName = 'Owner 1';
@@ -132,10 +124,13 @@ public with sharing class TestDealManager {
         wrap.leaseStartDate = Date.newInstance(2022, 5, 10);
         wrap.leaseEndDate = Date.newInstance(2022, 7, 20);
 
-        Deal__c resultDeal = DealManager.createDeal(wrap, true);
-        Deal__c resultDBDeal = [SELECT RecordTypeId FROM Deal__c WHERE Id = :resultDeal.Id];
+        Deal__c resultDeal = DealManager.createDeal(wrap, false);
         System.assertEquals(LEASE_TYPE, resultDeal.RecordTypeId);
-        System.assertEquals(LEASE_TYPE, resultDBDeal.RecordTypeId);
+        
+        Test.startTest();
+        Database.SaveResult result = Database.insert(resultDeal);
+        Test.stopTest();
+        System.assert(result.isSuccess());
     }
 
     @isTest static void testUpdateDealsById(){
@@ -151,10 +146,13 @@ public with sharing class TestDealManager {
         wrap.leaseStartDate = Date.newInstance(2022, 5, 10);
         wrap.leaseEndDate = Date.newInstance(2022, 7, 20);
 
-        Deal__c resultDeal = DealManager.updateDealsById(wrap, true);
-        Deal__c resultDBDeal = [SELECT RecordTypeId FROM Deal__c WHERE Id = :resultDeal.Id];
+        Deal__c resultDeal = DealManager.updateDealsById(wrap, false);
         System.assertEquals(LEASE_TYPE, resultDeal.RecordTypeId);
-        System.assertEquals(LEASE_TYPE, resultDBDeal.RecordTypeId);
+        
+        Test.startTest();
+        Database.SaveResult result = Database.update(resultDeal);
+        Test.stopTest();
+        System.assert(result.isSuccess());
     }
 
     @isTest static void testDeleteDealsByStatuses(){

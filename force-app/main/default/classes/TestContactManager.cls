@@ -51,10 +51,13 @@ public with sharing class TestContactManager {
         wrap.phone = '+375292827262';
         wrap.email = 'test_contact@created.prop';
 
-        Contact resultCon = ContactManager.createContact(wrap, true);
-        Contact resultDBCon = [SELECT RecordTypeId FROM Contact WHERE LastName = 'Created'];
+        Contact resultCon = ContactManager.createContact(wrap, false);
         System.assertEquals(PROP_OWNER_TYPE, resultCon.RecordTypeId);
-        System.assertEquals(PROP_OWNER_TYPE, resultDBCon.RecordTypeId);
+        
+        Test.startTest();
+        Database.SaveResult result = Database.insert(resultCon);
+        Test.stopTest();
+        System.assert(result.isSuccess());
     }
 
     @isTest static void testUpdateContactById(){
@@ -66,10 +69,13 @@ public with sharing class TestContactManager {
         wrap.lastName = 'Updated';
         wrap.recordTypeId = conForUpdate.RecordTypeId;
 
-        Contact resultCon = ContactManager.updateContactById(wrap, true);
-        Contact resultDBCon = [SELECT LastName FROM Contact WHERE Id = :conForUpdate.Id];
+        Contact resultCon = ContactManager.updateContactById(wrap, false);
         System.assertEquals(wrap.lastName, resultCon.LastName);
-        System.assertEquals(wrap.lastName, resultDBCon.LastName);
+        
+        Test.startTest();
+        Database.SaveResult result = Database.update(resultCon);
+        Test.stopTest();
+        System.assert(result.isSuccess());
     }
 
     @isTest static void testDeleteContactsByEmails(){

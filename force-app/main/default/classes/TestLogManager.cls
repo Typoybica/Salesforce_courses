@@ -41,18 +41,24 @@ public with sharing class TestLogManager {
     }
 
     @isTest static void testCreateLog(){
-        Log__c resultLog = LogManager.createLog('Event', 'Somewhere the event happened', true);
-        Log__c resultDBLog = [SELECT Type__c FROM Log__c WHERE Id = :resultLog.Id];
+        Log__c resultLog = LogManager.createLog('Event', 'Somewhere the event happened', false);
         System.assertEquals('Event', resultLog.Type__c);
-        System.assertEquals('Event', resultDBLog.Type__c);
+        
+        Test.startTest();
+        Database.SaveResult result = Database.insert(resultLog);
+        Test.stopTest();
+        System.assert(result.isSuccess());
     }
 
     @isTest static void testUpdateLogById(){
         Log__c logForUpdate = Database.query('SELECT ' + FIELDS + ' FROM Log__c WHERE Type__c = \'Undefined\'');
-        Log__c resultLog = LogManager.updateLogById(logForUpdate.Id, 'Event', logForUpdate.Message__c, true);
-        Log__c resultDBLog = [SELECT Type__c FROM Log__c WHERE Id = :resultLog.Id];
+        Log__c resultLog = LogManager.updateLogById(logForUpdate.Id, 'Event', logForUpdate.Message__c, false);
         System.assertEquals('Event', resultLog.Type__c);
-        System.assertEquals('Event', resultDBLog.Type__c);
+        
+        Test.startTest();
+        Database.SaveResult result = Database.update(resultLog);
+        Test.stopTest();
+        System.assert(result.isSuccess());
     }
 
     @isTest static void testDeleteLogsByTypes(){
