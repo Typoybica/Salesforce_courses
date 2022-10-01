@@ -1,5 +1,5 @@
 @isTest
-public with sharing class TestLogManager {
+public with sharing class LogManagerTest {
     
     static final String FIELDS = 'Id, Type__c, Message__c';
 
